@@ -1,7 +1,9 @@
 # 编译原理 (Compiling Principle)
 
-编程语言 : `python 3.6`
-Web 实现 ： `Flask 1.0`
+编程语言 : `python 3.6` 
+
+Web 实现 ： `Flask 1.0` 
+
 目标语言 : `C Programming Language`
 
 ## 实验目录 (Experiments)
