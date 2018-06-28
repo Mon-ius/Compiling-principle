@@ -1,0 +1,248 @@
+{% extends 'bootstrap/base.html' %} 
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block title %} 
+{% if title %}{{ title }}{% endif %} 
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+{{super()}}
+{% endblock %} 
+
+{% block navbar %}
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+                    aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="https://home.yzhub.cn">{{ _('Home') }}</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                        <li><a href="https://translator.yzhub.cn">{{ _('Translator') }}</a></li>
+                        <li><a href="https://go.yzhub.cn">{{ _('Elevator') }}</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <hr>
+{% endblock %}
+{% block content %}
+<div class="container">
+<div class="panel panel-default">
+    <div class="panel-heading">
+         <p>{{ _('Input Elevator Floor Count Numbers that You Wanna have a Try!') }}</p>
+    </div>
+    <div class="panel-body">    
+    <form class="form-inline">
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-addon">{{ _('Amount') }}</div>
+                <input id='start' type="text" class="form-control" id="exampleInputAmount" placeholder="5">
+                <div  class="input-group-addon btn-success">
+                    <a id='run' href="javascript:fstart('#run','#start');">{{ _('Run') }}</a></div>
+            </div>
+            
+            
+        </div>
+    </form>
+    </div>
+</div>
+<div class="jumbotron">
+    <h2>DFA</h2>
+    <p>A deterministic finite automaton
+        <i>M</i> is a 5-
+        <a href="https://en.wikipedia.org/wiki/N-tuple" class="mw-redirect" title="N-tuple">tuple</a>, (
+        <i>Q</i>, Σ, δ,
+        <i>q</i>
+        <sub>
+            <i>0</i>
+        </sub>,
+        <i>F</i>), consisting of</p>
+    <ul>
+        <li>a finite set of
+            <a href="https://en.wikipedia.org/wiki/State_(computer_science)" title="State (computer science)">states</a> (
+            <i>Q</i>)</li>
+        <li>a finite set of input symbols called the
+            <a href="https://en.wikipedia.org/wiki/Alphabet_(computer_science)" class="mw-redirect" title="Alphabet (computer science)">alphabet</a> (Σ)</li>
+        <li>a transition
+            <a href="https://en.wikipedia.org/wiki/Function_(mathematics)" title="Function (mathematics)">function</a> (δ&nbsp;:
+            <i>Q</i> × Σ →
+            <i>Q</i>)</li>
+        <li>an initial or
+            <a href="https://en.wikipedia.org/wiki/Finite_state_machine#Start_state" class="mw-redirect" title="Finite state machine">start state</a> (
+            <i>q</i>
+            <sub>
+                <i>0</i>
+            </sub> ∈
+            <i>Q</i>)</li>
+        <li>a set of
+            <a href="https://en.wikipedia.org/wiki/Finite_state_machine#Accept_.28or_final.29_states" class="mw-redirect" title="Finite state machine">accept states</a> (
+            <i>F</i> ⊆
+            <i>Q</i>)</li>
+    </ul>
+    <p>Let
+        <i>w = a
+            <sub>1</sub>a
+            <sub>2</sub> ... a
+            <sub>n</sub>
+        </i> be a string over the alphabet Σ. The automaton
+        <i>M</i> accepts the string
+        <i>w</i> if a sequence of states,
+        <i>r
+            <sub>0</sub>,r
+            <sub>1</sub>, ..., r
+            <sub>n</sub>
+        </i>, exists in
+        <i>Q</i> with the following conditions:</p>
+    <ol>
+        <li>
+            <i>r
+                <sub>0</sub>
+            </i> =
+            <i>q</i>
+            <sub>
+                <i>0</i>
+            </sub>
+        </li>
+        <li>
+            <i>r
+                <sub>i+1</sub>
+            </i> = δ(
+            <i>r
+                <sub>i</sub>
+            </i>,
+            <i>a
+                <sub>i+1</sub>
+            </i>), for
+            <i>i</i> =
+            <i>0, ..., n−1</i>
+        </li>
+        <li>
+            <i>r
+                <sub>n</sub>
+            </i> ∈
+            <i>F</i>.</li>
+    </ol>
+</div>
+  <div class='tests'><div class="row"></div></div>
+        {% with messages = get_flashed_messages() %} 
+            {% if messages %} 
+            {% for message in messages %}
+            <div class="alert alert-info" role="alert">{{ message }}</div>
+            {% endfor %} 
+            {% endif %} 
+        {% endwith %} 
+        {% block app_content %}{% endblock %}
+</div>
+{% endblock %}
+{% block scripts %}
+
+{{ super() }} 
+
+
+<script src="{{ url_for('static', filename='jquery.transit.js') }}"></script>
+<script src="{{ url_for('static', filename='test.js') }}"></script>
+
+<script>
+    function run(num, $PElm) {
+        var $Elm = $PElm.parent().find('.panel-heading');
+        var $stateShow = $("<p>{{ _(' Touch any button to go after you entered the elevator!') }}<kbd>Running</kbd></p>");
+        $Elm.children().remove();
+        $Elm.append($stateShow);
+        $PElm.children().remove();    
+            for (var i = 1; i <= num; i++) {
+                if (i < 10) j = 0; else j = '';
+                if ((i - 1) % 30)
+                    $k.append($('<button type="button" class="btn btn-primary btn-sm controller style="margin-right: 5px" id="c-' + i +'" ><span class="badge">' + j + i + '</span></button>'))
+                else {
+                    if (i > 1)
+                        $PElm.append($k);
+                    $k = $('<p></p>');
+                    $k.append($('<button type="button" class="btn btn-primary btn-sm controller style="margin-right: 5px" id="c-' + i +'" ><span class="badge">' + j + i + '</span></button>'))
+                }
+            }
+            $PElm.append($k);
+        }
+
+    function fstart(sourceElm, destElem) {
+        $(sourceElm).html('<img src="{{url_for('static', filename='loading.gif') }}">');
+        $.post('/start', {
+            floors: $(destElem).val()
+        }).done(function (response) {
+
+            var $form = $(destElem).closest('.form-inline');
+            var $ep = $form.parent();
+            var $jumbotron=$('.jumbotron');
+            $jumbotron.remove();
+            var amount = response['floor'];
+            run(amount, $ep);
+            for(var i=0;i< amount;i++)
+                test(amount,'Opacity', function ($box) {
+                    $box.transition({ opacity: 0 });
+                });
+            $(".controller").button().click(function () {
+                forward($(this));
+            });
+             
+        }).fail(function () {
+            var $form = $(destElem).closest('.form-inline');
+            var $tmp = $form.parent();
+            var $pep = $tmp.parent();
+            var $jumbotron = $('.jumbotron');
+            $jumbotron.remove();
+            $tmp.remove();
+            var $ep = $pep.children();
+            $ep.children().remove();
+            $ep.text("{{ _('Error: Could not contact server.') }}");
+        });
+    }
+    async function aygo(){
+    $.post('/moving', {
+            move: 1
+        }).done(function (response) {
+            var elast = response['elast'];
+            var enow = response['enow'];
+            
+            Movout(elast, enow);
+            console.log(enow);
+        }).fail(function () {
+            console.log('errrr');
+        });    
+    }
+    async function forward(ctrl) {
+        var amount= $('.tests .cat').length;
+        var t= ctrl.attr('id').split("-")[1];
+        var s = window.es;
+        if (window.once){
+            for (var i = amount ; i > 0; i--) {
+                await Eout(i);
+                await sleep(300);
+                console.log(i);
+                if(i==1) await Ein(i);
+            }
+            setInterval(function(){
+                aygo()
+            }, 500);
+            window.once=false;
+        }         
+        $.post('/running', {
+            etarget: t
+        }).done(function (response) {
+            
+            var s = response['enow'];
+            console.log(s);
+
+        }).fail(function () {
+            console.log('error', t)
+        });
+}   
+
+</script>
+{% endblock %}
