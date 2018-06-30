@@ -16,12 +16,12 @@ Web 实现 (Web Frame) ： `Flask 1.0`
 
 [demo]()
 
-### 01 词法分析 (lexical analysis)
+### 01 词法分析 (lexical and parser)
 
 > 设计一个语法分析程序实现对高级语言源程序翻译加工成机器内部的表达方式
 
 
-### 02 递归下降分析 (Recursive decline analysis)
+### 02 递归下降分析 (Recursive decline method)
 
 > 设计一个递归下降分析程序实现对表达式进行语法分析并能报告程序的错误
 

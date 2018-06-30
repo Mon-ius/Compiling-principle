@@ -1,146 +1,119 @@
-{% extends 'bootstrap/base.html' %} 
+{% extends 'base.html' %} 
 {% import 'bootstrap/wtf.html' as wtf %}
 
-{% block title %} 
-{% if title %}{{ title }}{% endif %} 
-{% endblock %}
+
 
 {% block styles %}
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-{{super()}}
+    {{super()}}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 {% endblock %} 
 
-{% block navbar %}
-    <nav class="navbar navbar-default">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
-                    aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="https://home.yzhub.cn">{{ _('Home') }}</a>
-            </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                        <li><a href="https://translator.yzhub.cn">{{ _('Translator') }}</a></li>
-                        <li><a href="https://go.yzhub.cn">{{ _('Elevator') }}</a></li>
-                </ul>
-            </div>
+
+{% block app_content %}
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <p>{{ _('Input Elevator Floor Count Numbers that You Wanna have a Try!') }}</p>
         </div>
-    </nav>
-    <hr>
-{% endblock %}
-{% block content %}
-<div class="container">
-<div class="panel panel-default">
-    <div class="panel-heading">
-         <p>{{ _('Input Elevator Floor Count Numbers that You Wanna have a Try!') }}</p>
-    </div>
-    <div class="panel-body">    
-    <form class="form-inline">
-        <div class="form-group">
-            <div class="input-group">
-                <div class="input-group-addon">{{ _('Amount') }}</div>
-                <input id='start' type="text" class="form-control" id="exampleInputAmount" placeholder="5">
-                <div  class="input-group-addon btn-success">
-                    <a id='run' href="javascript:fstart('#run','#start');">{{ _('Run') }}</a></div>
+        <div class="panel-body">    
+        <form class="form-inline">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">{{ _('Amount') }}</div>
+                    <input id='start' type="text" class="form-control" id="exampleInputAmount" placeholder="5">
+                    <div  class="input-group-addon btn-success">
+                        <a id='run' href="javascript:fstart('#run','#start');">{{ _('Run') }}</a></div>
+                </div>
+                
+                
             </div>
-            
-            
+        </form>
         </div>
-    </form>
     </div>
-</div>
-<div class="jumbotron">
-    <h2>DFA</h2>
-    <p>A deterministic finite automaton
-        <i>M</i> is a 5-
-        <a href="https://en.wikipedia.org/wiki/N-tuple" class="mw-redirect" title="N-tuple">tuple</a>, (
-        <i>Q</i>, Σ, δ,
-        <i>q</i>
-        <sub>
-            <i>0</i>
-        </sub>,
-        <i>F</i>), consisting of</p>
-    <ul>
-        <li>a finite set of
-            <a href="https://en.wikipedia.org/wiki/State_(computer_science)" title="State (computer science)">states</a> (
-            <i>Q</i>)</li>
-        <li>a finite set of input symbols called the
-            <a href="https://en.wikipedia.org/wiki/Alphabet_(computer_science)" class="mw-redirect" title="Alphabet (computer science)">alphabet</a> (Σ)</li>
-        <li>a transition
-            <a href="https://en.wikipedia.org/wiki/Function_(mathematics)" title="Function (mathematics)">function</a> (δ&nbsp;:
-            <i>Q</i> × Σ →
-            <i>Q</i>)</li>
-        <li>an initial or
-            <a href="https://en.wikipedia.org/wiki/Finite_state_machine#Start_state" class="mw-redirect" title="Finite state machine">start state</a> (
+    <div class="jumbotron">
+        <h2>DFA</h2>
+        <p>A deterministic finite automaton
+            <i>M</i> is a 5-
+            <a href="https://en.wikipedia.org/wiki/N-tuple" class="mw-redirect" title="N-tuple">tuple</a>, (
+            <i>Q</i>, Σ, δ,
             <i>q</i>
             <sub>
                 <i>0</i>
-            </sub> ∈
-            <i>Q</i>)</li>
-        <li>a set of
-            <a href="https://en.wikipedia.org/wiki/Finite_state_machine#Accept_.28or_final.29_states" class="mw-redirect" title="Finite state machine">accept states</a> (
-            <i>F</i> ⊆
-            <i>Q</i>)</li>
-    </ul>
-    <p>Let
-        <i>w = a
-            <sub>1</sub>a
-            <sub>2</sub> ... a
-            <sub>n</sub>
-        </i> be a string over the alphabet Σ. The automaton
-        <i>M</i> accepts the string
-        <i>w</i> if a sequence of states,
-        <i>r
-            <sub>0</sub>,r
-            <sub>1</sub>, ..., r
-            <sub>n</sub>
-        </i>, exists in
-        <i>Q</i> with the following conditions:</p>
-    <ol>
-        <li>
-            <i>r
-                <sub>0</sub>
-            </i> =
-            <i>q</i>
-            <sub>
-                <i>0</i>
-            </sub>
-        </li>
-        <li>
-            <i>r
-                <sub>i+1</sub>
-            </i> = δ(
-            <i>r
-                <sub>i</sub>
-            </i>,
-            <i>a
-                <sub>i+1</sub>
-            </i>), for
-            <i>i</i> =
-            <i>0, ..., n−1</i>
-        </li>
-        <li>
-            <i>r
+            </sub>,
+            <i>F</i>), consisting of</p>
+        <ul>
+            <li>a finite set of
+                <a href="https://en.wikipedia.org/wiki/State_(computer_science)" title="State (computer science)">states</a> (
+                <i>Q</i>)</li>
+            <li>a finite set of input symbols called the
+                <a href="https://en.wikipedia.org/wiki/Alphabet_(computer_science)" class="mw-redirect" title="Alphabet (computer science)">alphabet</a> (Σ)</li>
+            <li>a transition
+                <a href="https://en.wikipedia.org/wiki/Function_(mathematics)" title="Function (mathematics)">function</a> (δ&nbsp;:
+                <i>Q</i> × Σ →
+                <i>Q</i>)</li>
+            <li>an initial or
+                <a href="https://en.wikipedia.org/wiki/Finite_state_machine#Start_state" class="mw-redirect" title="Finite state machine">start state</a> (
+                <i>q</i>
+                <sub>
+                    <i>0</i>
+                </sub> ∈
+                <i>Q</i>)</li>
+            <li>a set of
+                <a href="https://en.wikipedia.org/wiki/Finite_state_machine#Accept_.28or_final.29_states" class="mw-redirect" title="Finite state machine">accept states</a> (
+                <i>F</i> ⊆
+                <i>Q</i>)</li>
+        </ul>
+        <p>Let
+            <i>w = a
+                <sub>1</sub>a
+                <sub>2</sub> ... a
                 <sub>n</sub>
-            </i> ∈
-            <i>F</i>.</li>
-    </ol>
-</div>
-  <div class='tests'><div class="row"></div></div>
-        {% with messages = get_flashed_messages() %} 
-            {% if messages %} 
-            {% for message in messages %}
-            <div class="alert alert-info" role="alert">{{ message }}</div>
-            {% endfor %} 
-            {% endif %} 
-        {% endwith %} 
-        {% block app_content %}{% endblock %}
-</div>
+            </i> be a string over the alphabet Σ. The automaton
+            <i>M</i> accepts the string
+            <i>w</i> if a sequence of states,
+            <i>r
+                <sub>0</sub>,r
+                <sub>1</sub>, ..., r
+                <sub>n</sub>
+            </i>, exists in
+            <i>Q</i> with the following conditions:</p>
+        <ol>
+            <li>
+                <i>r
+                    <sub>0</sub>
+                </i> =
+                <i>q</i>
+                <sub>
+                    <i>0</i>
+                </sub>
+            </li>
+            <li>
+                <i>r
+                    <sub>i+1</sub>
+                </i> = δ(
+                <i>r
+                    <sub>i</sub>
+                </i>,
+                <i>a
+                    <sub>i+1</sub>
+                </i>), for
+                <i>i</i> =
+                <i>0, ..., n−1</i>
+            </li>
+            <li>
+                <i>r
+                    <sub>n</sub>
+                </i> ∈
+                <i>F</i>.</li>
+        </ol>
+    </div>
+    <div class='tests'>
+      <div class="row">
+
+      </div>
+    </div>
+
+
 {% endblock %}
 {% block scripts %}
 
