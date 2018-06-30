@@ -16,7 +16,7 @@ Web 实现 (Web Frame) ： `Flask 1.0`
 
 [demo]()
 
-### 01 词法分析 (lexical and parser)
+### 01 词法分析 (lexer and parser)
 
 > 设计一个语法分析程序实现对高级语言源程序翻译加工成机器内部的表达方式
 
