@@ -1,0 +1,46 @@
+{% extends "main/base.html" %}
+
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <div class="panel panel-primary">
+        <div class="panel-body">
+            <h4>{{ _('Lexer and Parser') }}</h4>
+        </div>
+        <div class="panel-footer">
+            
+        <textarea id="post{{ res }}" type="text"  rows="6" class="form-control" aria-label="..."></textarea>
+        <br>
+        <div id="parse{{ res }}" class="well well-sm">Parser Result</div>
+        <br>
+        <span >
+        
+            <a class="btn btn-primary" role="button" href="javascript:parser(
+                        '#post{{ res }}',
+                        '#parse{{ res }}',
+                        );">{{ _('Parse') }}</a>
+        </span>
+        </div>
+    </div>
+
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+<script>
+    function parser(sourceElem, destElem) {
+        $(destElem).html('<img src="{{ url_for('static', filename='loading.gif') }}">');
+        $.post('{{ url_for("main.parser")}}', {
+            text: $(sourceElem).val(),
+        }).done(function (response) {
+            arr = response['text'];
+            arr = jQuery.map(arr, function (a) {
+                    return '<p>'+a+ '</p>';
+                });
+            $(destElem).text('[Start]')
+            $(destElem).append(arr)
+        }).fail(function () {
+            $(destElem).text("{{ _('Error: Could not contact server.') }}");
+        });
+    }
+</script> 
+{% endblock %}
