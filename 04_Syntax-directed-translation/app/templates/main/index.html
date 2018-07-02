@@ -11,10 +11,12 @@
             
         <textarea id="post{{ res }}" type="text"  rows="6" class="form-control" aria-label="..."></textarea>
         <br>
-        <div id="parse{{ res }}" class="well well-sm">Parser Result</div>
+        <div id="parse{{ res }}" class="well well-sm">
+                        <h4>Examples Input:</h4>
+                        <p>(t1+p)*(2+2)</p>
+        </div>
         <br>
         <span >
-        
             <a class="btn btn-primary" role="button" href="javascript:parser(
                         '#post{{ res }}',
                         '#parse{{ res }}',

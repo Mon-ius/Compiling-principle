@@ -27,14 +27,6 @@ def generate_tokens(text):
 
 # Parser
 class ExpressionEvaluator:
-    '''
-    Implementation of a recursive descent parser. Each method
-    implements a single grammar rule. Use the ._accept() method
-    to test and accept the current lookahead token. Use the ._expect()
-    method to exactly match and discard the next token on on the input
-    (or raise a SyntaxError if it doesn't match).
-    '''
-
     def parse(self, text):
         self.tokens = generate_tokens(text)
         self.tok = None  # Last symbol consumed

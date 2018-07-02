@@ -14,7 +14,6 @@ def _find(x,fa):
     if x == fa[x]:
         return x
     else:
-        
         return _find(fa[x],fa)
 
 def _check(x,y,fa):
@@ -24,11 +23,9 @@ def _check(x,y,fa):
 
 def _union(x,y,fa):
     if x not in fa.keys():
-        print('ix',x)
         fa[x]=x
     if y not in fa.keys():
         fa[y]=y
-        print('ix',y)
     x = _find(x,fa)
     y = _find(y,fa)
     fa[x]= y
@@ -50,30 +47,27 @@ def check(x,y,fa):
 
 class WORD:
     def __init__(self,left):
-        # print(left)
         self.left = left
         self.right = []
     def insert(self,right):
         self.right.append(right)
-    def print(self):
-        message=[]
-        st = "{} -> {}".format(self.left,self.right[0])
-        print(st,end=' ')
+    def put(self):
+        message=""
+        st = "{} -> {} ".format(self.left,self.right[0])
+        message+= st
         for m in self.right[1:]:
-            print("|{}".format(m),end=' ')
-        else:
-            print("")
+            message+="|{} ".format(m)
         return message
 
 
 def dfs(x, vis, VN_set,VN_dic,firstc,lastc):
     if vis[x]:
         return
-        # print(x)
     vis[x]=1
     left = VN_set[x].left
     for i in range(len(VN_set[x].right)):
         right = VN_set[x].right[i]
+        
         if right[0].isupper():
             y = VN_dic[right[:1]]-1
             if len(right)>1 and not right[1].isupper():
@@ -111,7 +105,7 @@ def reduction(src,VN_set,fa):
                 return VN_set.left
     return ""
 
-def move_reduction(src,VN_set,relation):
+def move_reduction(src,VN_set,relation,output):
     fa =dict()
     for i in range(len(VN_set)):
         left = VN_set[i].left
@@ -119,7 +113,7 @@ def move_reduction(src,VN_set,relation):
             right = VN_set[i].right[j]
             if len(left) == 1 and len(right) ==1:
                 _union(left[0],right[0],fa)
-    print("步骤", "栈", "优先关系", "当前符号", "剩余符号", "动作")
+    output.append("Steps Stack Priority Sympol(N) Sympol(L) Action")
     stk = []
     steps =1
     src +='#'
@@ -139,18 +133,18 @@ def move_reduction(src,VN_set,relation):
             tmp = ""
             
             if i == len(src)-1:
-                print("{} {} {} {} {} {}".format(tmp+str(steps+48),stk,tmp+ch,tmp+src[i], "None" , "forward"))
+                output.append("{} {} {} {} {} {}".format(tmp+str(steps+48),stk,tmp+ch,tmp+src[i], "None" , "forward"))
             else:
-                print("{} {} {} {} {} {}".format(tmp+str(steps+48),stk,tmp+ch,tmp+src[i],src[i+1:-(1+i)], "forward"))
+                output.append("{} {} {} {} {} {}".format(tmp+str(steps+48),stk,tmp+ch,tmp+src[i],src[i+1:-(1+i)], "forward"))
             stk.append(src[i])
         else:
             tmp =""
             string = ""
             x = len(stk)-2
             if i == len(src):
-                print("{} {} {} {} {} {}".format(tmp+str(steps+48),stk,tmp+ch,tmp+src[i], "None" , "statute"))         
+                output.append("{} {} {} {} {} {}".format(tmp+str(steps+48),stk,tmp+ch,tmp+src[i], "None" , "statute"))         
             else:  
-                print("{} {} {} {} {} {}".format(tmp+str(steps+48),stk,tmp+ch,tmp+src[i], src[i+1:-(1+i)] , "statute"))
+                output.append("{} {} {} {} {} {}".format(tmp+str(steps+48),stk,tmp+ch,tmp+src[i], src[i+1:-(1+i)] , "statute"))
             while(1):
                 if not len(stk):
                     break
@@ -168,17 +162,8 @@ def move_reduction(src,VN_set,relation):
             i-=1
         steps+=1
 
-            
-def test(text):
-    h_text = []
-    for s in text:
-        e=[]
-        for c in s:
-            e.append(c)
-        h_text.append(e)
-    print(h_text)
-
 def lexer(text):
+    output=[]
     message = []
     VN_set =[]
     VT = []
@@ -215,54 +200,52 @@ def lexer(text):
                     continue
                 VT.append(s[k])
                 used[ord(s[k])] = len(VT)
-    print("************VT集*******************")
+    output.append("---------------VT-------------------")
+
     tmp = []
     for m in VT:
         tmp.append(str(m))
-    print(tmp)
-    print("*************产生式*****************")
+    output.append(tmp)
+    output.append("-----------Production---------------")
     for i in range(len(VN_set)):
-        message+=VN_set[i].print()
-    print("************************************")
+        output.append(VN_set[i].put())
+    output.append("------------------------------------")
     vis = [0 for i in range(507)]
     for i in range(len(VN_set)):
         if vis[i]:
             continue
         else:
-            dfs(x, vis, VN_set,VN_dic,firstc,lastc)
-    for ss in VN_set:
-        print(ss.left,ss.right)
-    print("------------firstVT集-------------------")
+            dfs(i, vis, VN_set,VN_dic,firstc,lastc)
+
+    output.append("------------firstVT-----------------")
+
+    
     for i in range(len(VN_set)):
-        print("{} : ".format(VN_set[i].left),end=' ')
+        message = ""
+        message+="{} : ".format(VN_set[i].left)
         for t in firstc[i]:
-            print("{} ".format(t),end=' ')
-        else:
-            print("")       
-
-
+            message+="{} ".format(t)
+        output.append(message)  
     vis = [0 for i in range(507)]
     for i in range(len(VN_set)):
         if vis[i]:
             continue
         else:
-            dfs1(x,vis, VN_set,VN_dic,firstc,lastc)
+            dfs1(i,vis, VN_set,VN_dic,firstc,lastc)
 
-    print("------------lastVT集-------------------")
+    output.append("-------------lastVT-----------------")
     for i in range(len(VN_set)):
-        print("{} : ".format(VN_set[i].left),end=' ')
+        message = ""
+        message+="{} : ".format(VN_set[i].left)
         for t in lastc[i]:
-            print("{} ".format(t),end=' ')
-        else:
-            print("")
-
-
+            message+="{} ".format(t)
+        output.append(message)
 
     for i in range(len(VN_set)):
         for j in range(len(VN_set[i].right)):
             right = VN_set[i].right[j]
             for k in range(len(right)-1):
-                if not right[k:k+2].isupper():
+                if not right[k:k+1].isupper() and not right[k+1:k+2].isupper():
                     relation[ord(right[k])][ord(right[k+1])] = '='
                 elif  right[k].isupper():
                     x = VN_dic[right[k:k+1]]-1
@@ -274,44 +257,51 @@ def lexer(text):
                         relation[ord(right[k])][ord(t)] = '<'
                     if right[k+2:k+3].isupper():
                         relation[ord(right[k])][ord(right[k+2])] = '='
-    for i in range((len(VT)+1)*10):
-        print('-',end='')
-    print("算符优先关系表",end='')
-    for i in range((len(VT)+1)*10):
-        print('-',end='')
-    print('')
+    message = ""
+    for i in range((len(VT)+1)):
+        message+= '-'
+    message+="Sympol Priority Table"
+    for i in range((len(VT)+1)):
+        message+= '-'
+    output.append(message)
 
-    print("\n|{:^6s}|".format(" "),end='')
-
-    for i in range(len(VT)):
-        print('{:^6s}{:^7s}'.format(VT[i],"|"),end='')
-    print('')
-
-    for i in range((len(VT)+1)*10):
-        print('-',end='')
-    print('')
+    message = ""
+    message+="\n|{:^6s}|".format(" ")
 
     for i in range(len(VT)):
-        print('|{:^4s}{:^5s}'.format(VT[i],"|"),end='')
+        message+='{:^6s}{:^7s}'.format(VT[i],"|")
+    output.append(message)
+
+    message = ""
+    for i in range((len(VT)+1)*5):
+        message+='-'
+    output.append(message)
+
+    for i in range(len(VT)):
+        message = ""
+        message+='|{:^4s}{:^5s}'.format(VT[i],"|")
         for j in range(len(VT)):
-            print("{:^5s}{:^5s}".format(relation[ord(VT[i])][ord(VT[j])],"|"),end='')
-        print('')
-        for i in range((len(VT)+1)*10):
-            print('-',end='')
-        print('')
-    # move_reduction("i+i",VN_set,relation)
+            message+="{:^5s}{:^5s}".format(relation[ord(VT[i])][ord(VT[j])],"|")
+        output.append(message)
+        message = ""
+        for i in range((len(VT)+1)*5):
+            message+= '-'
+        output.append(message)
+    # move_reduction("i+i",VN_set,relation,output)
+    return output
 
 
 # text = ['S->#E#','P->i','F->P','T->F','E->T','E->E+T']
-text = ['E->E+T',
-    'E->T',
-    'T->F',
-    'T->T*F',
-    'F->P',
-    'F->P^F',
-    'P->(E)',
-    'P->i']
+# text = ['E->E+T',
+#     'E->T',
+#     'T->F',
+#     'T->T*F',
+#     'F->P',
+#     'F->P^F',
+#     'P->(E)',
+#     'P->i']
  
  
 
-lexer(text)     
+# lexer(text)
+# print(output)  

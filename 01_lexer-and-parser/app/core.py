@@ -67,17 +67,9 @@ def lexer(characters, token_exprs):
                     tokens.append(token)
                 break
         if not match:
-            # sys.stderr.write('第 %d 行: ' % line_number)
-            # sys.stderr.write('Syntax error(0) 无法解析的记号:\' %s\'' % characters[pos])
-            # file_log.write('第 %d 行: Syntax error(0) 无法解析的记号:\' %s\'' % (line_number, characters[pos]) )
-            # file_log.close()
             dict = {'line':line_number,
                     'character':characters[pos]}
             return dict
-            #sys.exit(1)
-            # if tokens is str:
-
-            #return '第 %d 行:'% line_number, 'Syntax error(0) 无法解析的记号:\' %s\'' % characters[pos]
         else:
             pos = match.end(0)
     return tokens

@@ -23,7 +23,12 @@ def index():
 
 @bp.route('/parser', methods=['POST'])
 def parser():
+    input=request.form['text']
+    # print(type(input))
+    text = input.split('\n')
+    # print(text)
+
     return jsonify({
         'text':
-        parse(request.form['text'])
+        parse(text)
     })
